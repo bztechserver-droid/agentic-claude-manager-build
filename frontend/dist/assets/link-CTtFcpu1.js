@@ -1,0 +1,1 @@
+import{i as n,j as f}from"./index-iAE6SkcX.js";function i({href:e,children:u,onClick:r,...s}){const a=n();return f.jsx("a",{href:e,onClick:t=>{r==null||r(t),!t.defaultPrevented&&(t.metaKey||t.ctrlKey||t.shiftKey||t.altKey||t.button!==0||(t.preventDefault(),a.push(e)))},...s,children:u})}export{i as L};
