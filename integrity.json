@@ -1,14 +1,14 @@
 {
   "version": 1,
   "algo": "ed25519",
-  "created": "2026-09-05T11:24:13.227Z",
+  "created": "2026-09-05T11:41:28.890Z",
   "excludes": [
     "server/data",
     ".env"
   ],
   "publicKey": "MCowBQYDK2VwAyEAjPtlVqPdYlGiIW1LSKChYCdJF1ztHNUemcoa55Hk0hQ=",
   "files": {
-    "RELEASE.json": "e9af5ea00e33d37b3519b68c255083713d64985c3067ee0a71d2f5e4d5afc8d5",
+    "RELEASE.json": "b0e67e1bc3440bc1bbd81c49d215f3b081e0f4d8763b086cf20687c06a829600",
     "Start.bat": "43b7307944c60e3341010a5def23440c64a0c4a612da04dc8ed448407129f966",
     "frontend/dist/assets/Assistant-Bold-gm-uSS1B.woff2": "e0cdd332ce039770e93ec44336b6db65f931940f42b0342aad35a06e7f991d29",
     "frontend/dist/assets/Assistant-Medium-DrcxCXg3.woff2": "81a9f280ce6a790f20ca8cd521183caa430f1f7fdc0752c36ef1cc6dc828ac57",
@@ -309,7 +309,7 @@
     "frontend/dist/assets/zh-TW-RAJ6MFWO-B4TuYVRJ.js": "dd4bcfea308b5cf9bf1cbdeadc474d32f6a24a9760ab285357c9d32ed496137e",
     "frontend/dist/favicon.svg": "4190313801d5a9b9c93620968b3e96cff71d63ea9e139351d1384d2144678136",
     "frontend/dist/index.html": "b4bd0a3586d386c352fbd32e7f92fd9acdf222c72ea742b458e66751e71e213f",
-    "server/index.js": "bb970d121124ad0ce7260ab9c5e178433bc6037c13c1063513c087b18d7f1bd0",
+    "server/index.js": "810fa940b8a683d92d4572c9029001294bd064de772e3fc959436711d715db21",
     "server/node_modules/node-pty/LICENSE": "a3d60eaf32d2fb09c9d82ef39f14bd6e2c0f3ca7de30daa827486c0d6f8b6e9f",
     "server/node_modules/node-pty/README.md": "e2be297b0919196300e637fd2efb0cd039ee7f994515f45a0dd8eac112ec1eaf",
     "server/node_modules/node-pty/binding.gyp": "60087f9bc86f372a5ad49d15d7854140c29fac959aaa1fb2c8ffd0dc021595dd",
@@ -361,9 +361,9 @@
     "server/node_modules/node-pty/third_party/conpty/1.25.260303002/win10-x64/OpenConsole.exe": "7f68c840226505004215c0b82d4e502c24b5bc3f4b93c4baaaa19bd679c0def8",
     "server/node_modules/node-pty/third_party/conpty/1.25.260303002/win10-x64/conpty.dll": "3319b484b80bb53d1f4d0a9eb0ea60fd0f61da69db7280ca43b84215f19245ff",
     "server/node_modules/node-pty/typings/node-pty.d.ts": "5e2960f29b6d3ca6b8a438cca419e0485d046cb7d9acf67471d5627803ad8db0",
-    "server/orchestrator-mcp.mjs": "e55482ea2b4537d7be70a85714800a93ecb397013db0e1d18b5b5749d7e77c99",
+    "server/orchestrator-mcp.mjs": "93d223830433fc34dbce6816dfaced7a0ce2305925ccb85135f5a2a408c219b8",
     "server/package.json": "a84c59e44e71ccbeb91bd38e0df88db62c695776808f0e7df1fd48f2bca55ecd",
-    "ship-launcher.ps1": "91c03d948afb5a206502ec14a311486431ecc44a898ce2cb0eb1fd51e1bb6e13"
+    "ship-launcher.ps1": "c9d62cdbabb69b57ddde71cb206b57a4af7f3cf39ed4be58dc078539801977f9"
   },
-  "signature": "JGD+/9elmQ7rmKQoeZ9rYwvdWaFtT+sU1KErj6jnkwpn4i49RJpVdJZe5OsYy73RCYw0wHo4AmXAeEY5M02nDQ=="
+  "signature": "cge44PL+cjj39aaBZrGMZYHzAUWyrFMEyoTnOKlO4ZxCWeNZZR2TtsFwMHnREbwabj+njie7aWEf8z4KTt34Bw=="
 }

@@ -229,6 +229,15 @@ $env:MDV2_PORT = "$port"
 # which today has no peer check at all.
 $env:COS_HOST = '127.0.0.1'
 
+# The server stops when THIS process does. The watchdog below reaps the tree
+# when this script exits, but a watchdog is as mortal as what it watches -
+# and closing the console ORPHANS this script rather than ending it, which
+# left the port listening with no window attached. Verified both ways: killing
+# the console left 4740 up indefinitely; killing this script freed it in five
+# seconds. So the server is told who its launcher is and checks for itself.
+# See the COS_LAUNCHER_PID block in server/index.js.
+$env:COS_LAUNCHER_PID = "$PID"
+
 # NODE_OPTIONS IS DELIBERATELY NOT SCRUBBED HERE, and that is a decision, not an
 # omission. Clearing it would look like a hardening step and would not be one:
 # whoever can set NODE_OPTIONS before this script runs can also delete the line
@@ -715,9 +724,32 @@ if ($watchdogOk) {
 Write-Host "  Logs: $stateDir"
 Write-Host ""
 
-# Blocks until the server stops. When this window is closed instead, this
-# process dies here and the watchdog above does the reaping.
-Wait-Process -Id $serverPid -ErrorAction SilentlyContinue
+# Blocks until the server stops -- OR until the window this script was launched
+# from goes away.
+#
+# Wait-Process alone was not enough, and the gap is not theoretical: closing the
+# console kills the cmd.exe that ran this script, but ORPHANS this PowerShell
+# rather than ending it. Measured: the console went, this script kept waiting,
+# node kept serving, and the port stayed held with no window anywhere on screen.
+# Neither the watchdog (which waits on THIS process) nor the server's own
+# launcher check (which watches THIS pid) can fire, because this process is
+# alive and well and waiting for a server that is doing fine.
+#
+# So the wait is polled, and each turn also asks whether the console that
+# started us still exists. When it does not, this script exits -- which fires
+# the watchdog, which reaps the tree, and independently satisfies the server's
+# COS_LAUNCHER_PID check. Two seconds is well inside "I closed it and the port
+# was free by the time I looked".
+$parentPid = (Get-CimInstance Win32_Process -Filter "ProcessId = $PID").ParentProcessId
+while ($true) {
+  if (-not (Get-Process -Id $serverPid -ErrorAction SilentlyContinue)) { break }
+  if ($parentPid -and -not (Get-Process -Id $parentPid -ErrorAction SilentlyContinue)) {
+    Write-Host ""
+    Write-Host "  Window closed - stopping the app so the port is not left held."
+    break
+  }
+  Start-Sleep -Seconds 2
+}
 
 # Reached on a clean server exit; the watchdog handles the window-closed path.
 # Only the LABEL is removed -- the mutex is released by the OS when this process
