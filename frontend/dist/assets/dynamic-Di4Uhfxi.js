@@ -1,1 +1,0 @@
-import{r as t,j as e}from"./index-BuiQO2UV.js";function o(c,a){const s=t.lazy(async()=>{const n=await c();return"default"in n?n:{default:n}}),r=a==null?void 0:a.loading;return function(d){const u=s;return e.jsx(t.Suspense,{fallback:r?e.jsx(r,{}):null,children:e.jsx(u,{...d})})}}export{o as d};
