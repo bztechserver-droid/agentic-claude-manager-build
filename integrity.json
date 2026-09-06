@@ -1,14 +1,14 @@
 {
   "version": 1,
   "algo": "ed25519",
-  "created": "2026-09-06T15:50:33.640Z",
+  "created": "2026-09-06T15:59:57.593Z",
   "excludes": [
     "server/data",
     ".env"
   ],
   "publicKey": "MCowBQYDK2VwAyEAjPtlVqPdYlGiIW1LSKChYCdJF1ztHNUemcoa55Hk0hQ=",
   "files": {
-    "RELEASE.json": "776964c019f90be1f4ba148e1fa012e112bf464a72150a8568e7ed06a343c7e1",
+    "RELEASE.json": "1314d4b383de1d9d0d74ca234fa3671ea95952c91836cf6a55d2fb9a60930ef4",
     "Start.bat": "43b7307944c60e3341010a5def23440c64a0c4a612da04dc8ed448407129f966",
     "frontend/dist/assets/Assistant-Bold-gm-uSS1B.woff2": "e0cdd332ce039770e93ec44336b6db65f931940f42b0342aad35a06e7f991d29",
     "frontend/dist/assets/Assistant-Medium-DrcxCXg3.woff2": "81a9f280ce6a790f20ca8cd521183caa430f1f7fdc0752c36ef1cc6dc828ac57",
@@ -361,9 +361,9 @@
     "server/node_modules/node-pty/third_party/conpty/1.25.260303002/win10-x64/OpenConsole.exe": "7f68c840226505004215c0b82d4e502c24b5bc3f4b93c4baaaa19bd679c0def8",
     "server/node_modules/node-pty/third_party/conpty/1.25.260303002/win10-x64/conpty.dll": "3319b484b80bb53d1f4d0a9eb0ea60fd0f61da69db7280ca43b84215f19245ff",
     "server/node_modules/node-pty/typings/node-pty.d.ts": "5e2960f29b6d3ca6b8a438cca419e0485d046cb7d9acf67471d5627803ad8db0",
-    "server/orchestrator-mcp.mjs": "8268616391d8293b389eb58caa1b907623885f4eb79f83f77feaa1449801d6be",
+    "server/orchestrator-mcp.mjs": "7bd159492fa9db54812388ebd0c5198693e1de6148e1c0140bb7e1a5d88d38bf",
     "server/package.json": "a84c59e44e71ccbeb91bd38e0df88db62c695776808f0e7df1fd48f2bca55ecd",
     "ship-launcher.ps1": "c9d62cdbabb69b57ddde71cb206b57a4af7f3cf39ed4be58dc078539801977f9"
   },
-  "signature": "X2SwRjRq16mOJaTzeCCYoMnT9X3Q9vKI+x9cZ0z2WdtAmgQhIHwSelH6NeesShQZiVgkNtxCr+Fi8IhORsgIDg=="
+  "signature": "XBckvUMr9PeW7nRBtQPNcrxG4dU7kt683XDbBOaWa/lnpM6wFEVDzFXGNQXu3NwEo/N5DZaj66IbWgh5U7tcAg=="
 }
