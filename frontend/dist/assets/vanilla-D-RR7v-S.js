@@ -1,0 +1,9 @@
+import{dG as z,dH as O,dz as M}from"./index-_1F0Kyn3.js";var p={exports:{}},y={};/**
+ * @license React
+ * use-sync-external-store-shim/with-selector.production.js
+ *
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */var I;function q(){if(I)return y;I=1;var r=z(),t=O();function s(u,e){return u===e&&(u!==0||1/u===1/e)||u!==u&&e!==e}var d=typeof Object.is=="function"?Object.is:s,v=t.useSyncExternalStore,E=r.useRef,_=r.useEffect,g=r.useMemo,b=r.useDebugValue;return y.useSyncExternalStoreWithSelector=function(u,e,a,o,c){var n=E(null);if(n.current===null){var l={hasValue:!1,value:null};n.current=l}else l=n.current;n=g(function(){function R(i){if(!j){if(j=!0,S=i,i=o(i),c!==void 0&&l.hasValue){var f=l.value;if(c(f,i))return h=f}return h=i}if(f=h,d(S,i))return f;var D=o(i);return c!==void 0&&c(f,D)?(S=i,f):(S=i,h=D)}var j=!1,S,h,w=a===void 0?null:a;return[function(){return R(e())},w===null?void 0:function(){return R(w())}]},[e,a,o,c]);var m=v(u,n[0],n[1]);return _(function(){l.hasValue=!0,l.value=m},[m]),b(m),m},y}var V;function x(){return V||(V=1,p.exports=q()),p.exports}var C=x();const A=M(C),G={},W=r=>{let t;const s=new Set,d=(e,a)=>{const o=typeof e=="function"?e(t):e;if(!Object.is(o,t)){const c=t;t=a??(typeof o!="object"||o===null)?o:Object.assign({},t,o),s.forEach(n=>n(t,c))}},v=()=>t,b={setState:d,getState:v,getInitialState:()=>u,subscribe:e=>(s.add(e),()=>s.delete(e)),destroy:()=>{(G?"production":void 0)!=="production"&&console.warn("[DEPRECATED] The `destroy` method will be unsupported in a future version. Instead use unsubscribe function returned by subscribe. Everything will be garbage-collected if store is garbage-collected."),s.clear()}},u=t=r(d,v,b);return b},F=r=>r?W(r):W;export{F as c,A as u};
