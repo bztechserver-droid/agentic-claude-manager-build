@@ -27,10 +27,18 @@
 # as a half-finished merge. Reset makes the tree exactly the commit, which is
 # the only state the signature can ever verify.
 #
-# UNTRACKED FILES SURVIVE, which is what lets this script live in the folder it
-# rewrites: reset --hard and checkout -f rewrite TRACKED files and touch nothing
-# else. Nothing here runs `git clean`, deliberately - it would delete this
-# script mid-run.
+# THIS PAIR IS ALSO IN THE RELEASE. The published repo tracks Update.bat and
+# update.ps1 too, so the copy you dropped in is replaced by the release's own
+# on every install and update. Two consequences:
+#   * a fresh install must `checkout -f`. A plain checkout refuses to write a
+#     tracked file over an untracked one even when the bytes are identical, and
+#     it named exactly these two. Section 3 has already made sure the folder
+#     holds nothing but ours, so the force can only ever overwrite this pair.
+#   * this script is rewritten while it runs. PowerShell parses a file whole
+#     before executing it, so that is harmless here; Update.bat is written so
+#     that it is harmless there too - see its tail.
+# Other untracked files survive: reset --hard and checkout -f rewrite TRACKED
+# files and touch nothing else. Nothing here runs `git clean`, deliberately.
 #
 # WHAT THIS DOES NOT DO. It does not start the app and it does not stop it.
 # Stopping belongs to ship-launcher.ps1, which owns a named mutex to do it with;
@@ -194,7 +202,7 @@ if ($mode -eq 'install') {
   Write-Host ""
   # init + fetch + checkout, NOT `git clone`. Clone refuses a non-empty
   # directory, and this one is not empty - it holds the two files we arrived
-  # as. This reaches the same place and leaves them alone.
+  # as. This reaches the same place.
   & git init --quiet
   if ($LASTEXITCODE -ne 0) { Fail "git init failed in $root" }
   & git remote add origin $REPO
@@ -279,9 +287,15 @@ $savedEnv = if ($mode -eq 'update' -and (Test-Path $envFile)) { Get-Content $env
 Write-Host ""
 Write-Host "  Applying..."
 if ($mode -eq 'install') {
-  & git checkout --quiet -B main origin/main
+  # -f, because the release tracks this very pair. A plain checkout refuses to
+  # write a tracked file over an untracked one even when the bytes match, and
+  # "untracked working tree files would be overwritten by checkout: Update.bat,
+  # update.ps1" is exactly what every fresh install printed. Section 3 already
+  # refused any folder holding anything but ours, so forcing can only overwrite
+  # the pair we arrived as - with the release's own copy of it.
+  & git checkout --quiet -f -B main origin/main
   if ($LASTEXITCODE -ne 0) {
-    Fail "Could not check the release out into this folder.`n  If git named a file it would overwrite, that file is not ours - move it and`n  run this again."
+    Fail "Could not check the release out into this folder - git's reason is printed just above."
   }
 } else {
   & git reset --hard --quiet origin/main

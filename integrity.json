@@ -1,16 +1,15 @@
 {
   "version": 1,
   "algo": "ed25519",
-  "created": "2026-09-10T06:55:33.256Z",
+  "created": "2026-09-10T07:43:02.140Z",
   "excludes": [
     "server/data",
     ".env"
   ],
   "publicKey": "MCowBQYDK2VwAyEAjPtlVqPdYlGiIW1LSKChYCdJF1ztHNUemcoa55Hk0hQ=",
   "files": {
-    "RELEASE.json": "3d11c203ccdeee63a488f2d7fb8aa96f78f65329d01a409926c636d11a21c4cd",
+    "RELEASE.json": "12ed6b22e80f19873224c276f2f06747ae7524288ae656e3ddbe6f1ebb5d8908",
     "Start.bat": "43b7307944c60e3341010a5def23440c64a0c4a612da04dc8ed448407129f966",
-    "frontend/dist/.built-commit": "80e9c4862fd05830b63b659634c1124a8e440627b0993cc7dde7bd9eba69172a",
     "frontend/dist/assets/Assistant-Bold-gm-uSS1B.woff2": "e0cdd332ce039770e93ec44336b6db65f931940f42b0342aad35a06e7f991d29",
     "frontend/dist/assets/Assistant-Medium-DrcxCXg3.woff2": "81a9f280ce6a790f20ca8cd521183caa430f1f7fdc0752c36ef1cc6dc828ac57",
     "frontend/dist/assets/Assistant-Regular-DVxZuzxb.woff2": "76945f09225aae65bdbd204cb4ac40d4caa4ff67150e5074bab1a04d1b778fc3",
@@ -332,7 +331,7 @@
     "frontend/dist/assets/zh-TW-RAJ6MFWO-DjfdmqsG.js": "2cb3ff4f6eb48750486ebcf98468ce968d2736f5e1eda79292d6755795139d5b",
     "frontend/dist/favicon.png": "42700cee5bb18ec0f1146311c13287b2f7cfeb72e713674ac208daaf7ac1cdb5",
     "frontend/dist/index.html": "367933777472ec0d488a6dab9e097780148eb24b2fa38435b72556cefc81635b",
-    "server/index.js": "189d074aa98f0f3083b38bab11fccbf365b2e37f4cf9cea53548a97ffe124d18",
+    "server/index.js": "79b7ae2795ceee48c0064b2b7df9bcf9d3b4c79dbfd23f402c2c52d4aba303cf",
     "server/node_modules/node-pty/LICENSE": "a3d60eaf32d2fb09c9d82ef39f14bd6e2c0f3ca7de30daa827486c0d6f8b6e9f",
     "server/node_modules/node-pty/README.md": "e2be297b0919196300e637fd2efb0cd039ee7f994515f45a0dd8eac112ec1eaf",
     "server/node_modules/node-pty/binding.gyp": "60087f9bc86f372a5ad49d15d7854140c29fac959aaa1fb2c8ffd0dc021595dd",
@@ -388,5 +387,5 @@
     "server/package.json": "a84c59e44e71ccbeb91bd38e0df88db62c695776808f0e7df1fd48f2bca55ecd",
     "ship-launcher.ps1": "c9d62cdbabb69b57ddde71cb206b57a4af7f3cf39ed4be58dc078539801977f9"
   },
-  "signature": "4+qX8pgzYWc9GY64JJx/rdHXBjfTy4g88HiV1ouMcadQD+k5JdDTzglWPcjmdOZOqOeXcJEyPpdgN1Li1OfjDg=="
+  "signature": "YWZlmNnL1gPdTugLTR3w/n24etHGM/JSqxLAVsidxZtyTTQk6BHtluSQ5naUO/pb6W6vw2q1iLkBKVm9xRqbDQ=="
 }
