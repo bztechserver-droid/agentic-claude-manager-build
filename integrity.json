@@ -1,14 +1,14 @@
 {
   "version": 1,
   "algo": "ed25519",
-  "created": "2026-09-15T06:46:50.045Z",
+  "created": "2026-09-15T07:00:12.577Z",
   "excludes": [
     "server/data",
     ".env"
   ],
   "publicKey": "MCowBQYDK2VwAyEAjPtlVqPdYlGiIW1LSKChYCdJF1ztHNUemcoa55Hk0hQ=",
   "files": {
-    "RELEASE.json": "124defc645034304fdfa0e186469ff1c879c7f7139a7aef39215f80af8959c51",
+    "RELEASE.json": "ab00c26a5683fd411347d216f14d2a3f88450c97d9ddce485bc41fdd8be879d3",
     "Start.bat": "43b7307944c60e3341010a5def23440c64a0c4a612da04dc8ed448407129f966",
     "frontend/dist/assets/Assistant-Bold-gm-uSS1B.woff2": "e0cdd332ce039770e93ec44336b6db65f931940f42b0342aad35a06e7f991d29",
     "frontend/dist/assets/Assistant-Medium-DrcxCXg3.woff2": "81a9f280ce6a790f20ca8cd521183caa430f1f7fdc0752c36ef1cc6dc828ac57",
@@ -395,5 +395,5 @@
     "server/package.json": "a84c59e44e71ccbeb91bd38e0df88db62c695776808f0e7df1fd48f2bca55ecd",
     "ship-launcher.ps1": "c9d62cdbabb69b57ddde71cb206b57a4af7f3cf39ed4be58dc078539801977f9"
   },
-  "signature": "vYEP4exVJ6XpKys8gmvCdAsfQRFVcso0sd/LisLxWRfhSexk8abzDtoPAON59TNpk4Qy+7pi3T/CH12pSIGpDg=="
+  "signature": "1lRyXDQRfEogdBKItm9oxTFZ1gjpPHvcAvdqVGGpgs4YcssDCZEyj6/c+6lE+DZaowstfnERrHaztnisWHprAQ=="
 }
