@@ -369,6 +369,48 @@ if (-not (Get-Command node -ErrorAction SilentlyContinue)) {
   Write-Host "  Integrity OK." -ForegroundColor Green
 }
 
+# --- 7b. WinFsp — install it if it is missing. -------------------------------
+#
+#     The CRM Files drive is a WinFsp filesystem. The host (crm-fs.exe) travels
+#     inside the sealed ship, but WinFsp itself is a kernel driver installed per
+#     machine, not a file the app can carry — so the release ships the vendor
+#     MSI beside this script (published, not sealed) and installs it HERE when
+#     the machine does not already have it. The MSI is signed by Navimatics,
+#     WinFsp's author; msiexec checks that signature before it installs.
+#
+#     Elevated, and only for this one step: a driver install needs admin, and
+#     -Verb RunAs raises a single UAC prompt rather than forcing the whole
+#     update to run as administrator. NOT fatal if it is declined or fails —
+#     every other part of the app works without it; only the CRM drive stays
+#     unavailable, and the app says so in place of that control rather than
+#     erroring. Which is why a cancelled prompt is a note here, not a Fail.
+$winfspInstalled = [bool](Get-ItemProperty 'HKLM:\SOFTWARE\WOW6432Node\WinFsp' -ErrorAction SilentlyContinue)
+if (-not $winfspInstalled) {
+  $msi = Get-ChildItem -Path $root -Filter 'winfsp-*.msi' -ErrorAction SilentlyContinue | Select-Object -First 1
+  if (-not $msi) {
+    Write-Host ""
+    Write-Host "  WinFsp is not installed and no winfsp-*.msi shipped with this release." -ForegroundColor Yellow
+    Write-Host "  The CRM Files drive stays unavailable until WinFsp is installed." -ForegroundColor Yellow
+  } else {
+    Write-Host ""
+    Write-Host "  Installing WinFsp (the CRM Files drive needs it) - approve the prompt..."
+    try {
+      $mp = Start-Process msiexec.exe -ArgumentList @('/i', "`"$($msi.FullName)`"", '/qn', '/norestart') -Verb RunAs -Wait -PassThru
+      if ($mp.ExitCode -eq 0 -or $mp.ExitCode -eq 3010) {
+        Write-Host "  WinFsp installed." -ForegroundColor Green
+      } else {
+        Write-Host "  WinFsp installer exited $($mp.ExitCode) - the CRM drive stays unavailable." -ForegroundColor Yellow
+        Write-Host "  Run $($msi.Name) in this folder by hand to finish it." -ForegroundColor Yellow
+      }
+    } catch {
+      # -Verb RunAs throws when the UAC prompt is dismissed. That is a choice,
+      # not a failure of the update, so it does not stop or fail the script.
+      Write-Host "  WinFsp install skipped (elevation declined). The CRM drive stays" -ForegroundColor Yellow
+      Write-Host "  unavailable; re-run this, or run $($msi.Name) here, to enable it." -ForegroundColor Yellow
+    }
+  }
+}
+
 # --- 8. Done. ---
 $relFile = Join-Path $root 'RELEASE.json'
 Write-Host ""
