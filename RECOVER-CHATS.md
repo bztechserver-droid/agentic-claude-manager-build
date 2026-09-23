@@ -24,8 +24,10 @@ It never deletes anything, and it asks before every write.
   2. "What is its name?" For an agent, also ask "Which floor was it on?"
      If they don't know, search every floor.
 
-  Match names case-insensitively. Don't guess, and don't restore more than
-  the one thing asked for.
+  Match names case-insensitively, and by **part of the name**: people type
+  "retemplate" for an agent called "Retemplate Editor". If more than one
+  thing matches, list them and ask which one. Don't restore more than the one
+  thing asked for.
 - **Read-only until the user says yes.** Every search and listing step below
   only reads.
 - **Never delete, move or edit a source copy.** Backups the user keeps
@@ -82,12 +84,28 @@ done
 `...\agentic` itself. A parent of `...\Documents\agentic` makes the app read
 `Documents\agentic\agentic\data`, an empty folder, and every floor looks lost.
 
-If that's the problem, tell the user. Offer to (after they confirm):
-1. Back up `data-root.json`.
-2. Set its `"parent"` to the folder above.
-3. Restart the app.
+This mistake has happened on more than one machine. People pick the
+`agentic` folder they see in Explorer.
 
-That alone often brings everything back, so re-check before going on.
+- **Newer versions fix it themselves on start.** The app switches to the
+  folder above, corrects the setting, and folds anything created in the
+  doubled folder back in. It never overwrites and never touches the doubled
+  copy, and it records the merge in `<data>/migrations.json` as
+  `doubled-parent-recovery`. So first just restart the app, and check whether
+  that brought everything back.
+- **If it's still wrong**, the install is an older version. Tell the user,
+  and offer to do the following after they confirm (app stopped, step 5):
+  1. Back up `data-root.json`.
+  2. Set its `"parent"` to the folder above.
+  3. Carry over anything created while the app read the doubled folder. For
+     example, a floor made today exists only in `...\agentic\agentic\data`.
+     Show those entries, and for each one the user wants to keep, run the
+     step 6 merge from the doubled `floors.json` / `groups.json` into the
+     correct one. Otherwise they stop showing: still on disk, just no longer
+     read.
+  4. Restart the app.
+
+This alone often brings everything back, so re-check before going on.
 
 ## Step 3 — Find every earlier copy
 
@@ -121,7 +139,7 @@ const j=JSON.parse(fs.readFileSync(file,"utf8"));
 const seen=new Set(), root=path.join(os.homedir(),".claude","projects");
 try{for(const p of fs.readdirSync(root))for(const f of fs.readdirSync(path.join(root,p)))if(f.endsWith(".jsonl"))seen.add(f.slice(0,-6))}catch{}
 const has=id=>id?(seen.has(id)?"chat found":"no chat file"):"never started";
-const eq=(a,b)=>(a||"").toLowerCase()===(b||"").toLowerCase();
+const eq=(a,b)=>(a||"").toLowerCase().includes((b||"").toLowerCase());   // part of the name
 if(kind==="floor") for(const f of (j.floors||[]).filter(x=>eq(x.name,want)))
   {console.log("FLOOR",f.name,f.id,"agents:",f.agents.length,"updated:",f.updatedAt);f.agents.forEach(a=>console.log("   ",a.name,a.id,a.sessionId,has(a.sessionId)))}
 if(kind==="group") for(const g of (j.groups||[]).filter(x=>eq(x.name,want)))
@@ -208,11 +226,35 @@ console.log(i>=0?"replaced":"added","agent",pick.name,"on floor",lf.name);
    Pass the last argument only when the floor was recreated live under a new
    id. The user picks which live floor it goes onto.
 
-3. Briefs: for each agent restored (the one agent, or every agent on a
+3. **Reconnect an older chat.** An agent can come back pointing at a
+   `sessionId` whose chat file is gone ("no chat file"), while another copy
+   from step 4 has the SAME agent `id` with a different `sessionId` whose chat
+   IS found. That's the agent's older conversation.
+   - Tell the user the dates of both copies, and offer to point the agent at
+     the older chat.
+   - If they say yes, set that one agent's `sessionId` in the live file to the
+     session whose chat was found. Back up first, and change nothing else:
+
+```bash
+node -e '
+const fs=require("fs");
+const [live,agentId,sessionId]=process.argv.slice(1);
+const L=JSON.parse(fs.readFileSync(live,"utf8"));
+const a=(L.floors||[]).flatMap(f=>f.agents).find(x=>x.id===agentId); if(!a) throw new Error("agent not in live file");
+console.log("sessionId",a.sessionId,"->",sessionId); a.sessionId=sessionId;
+const tmp=live+".tmp-recover"; fs.writeFileSync(tmp,JSON.stringify(L,null,2)+"\n"); fs.renameSync(tmp,live);
+' "<data>/floors.json" "<agent id>" "<session id whose chat was found>"
+```
+
+   Don't do this when the missing session's chat might still turn up. Search
+   first, in `~/.claude/projects` and in
+   `%LOCALAPPDATA%\ChristopherOS\*\claude-isolated\projects`.
+
+4. Briefs: for each agent restored (the one agent, or every agent on a
    restored floor), copy `<source data>/briefs/<id>.md` into `<data>/briefs/`
    **only if it isn't already there** (`cp -n`). Try both the agent's `id`
    and its `sessionId` as the file name.
-4. Check that the live file still parses:
+5. Check that the live file still parses:
    `node -e 'JSON.parse(require("fs").readFileSync(process.argv[1],"utf8"))' "<data>/floors.json" && echo ok`
 
 ## Step 7 — Start and confirm

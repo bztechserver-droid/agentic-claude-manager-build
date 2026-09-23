@@ -1,14 +1,14 @@
 {
   "version": 1,
   "algo": "ed25519",
-  "created": "2026-09-23T13:40:43.083Z",
+  "created": "2026-09-23T13:53:00.828Z",
   "excludes": [
     "server/data",
     ".env"
   ],
   "publicKey": "MCowBQYDK2VwAyEAjPtlVqPdYlGiIW1LSKChYCdJF1ztHNUemcoa55Hk0hQ=",
   "files": {
-    "RELEASE.json": "0a7f15130272b7fdcaa6245412cfb272e9bb2468bce4d0dca78500a17291f6f6",
+    "RELEASE.json": "c64a61cd0d83407a7484e1847b1fa6dd7841c70fa036f9629a3be83b20fc62aa",
     "Start.bat": "43b7307944c60e3341010a5def23440c64a0c4a612da04dc8ed448407129f966",
     "crm-fs/bin/Release/net48/Microsoft.Bcl.AsyncInterfaces.dll": "80678203bd0203a6594f4e330b22543c0de5059382bb1c9334b7868b8f31b1bc",
     "crm-fs/bin/Release/net48/System.Buffers.dll": "accccfbe45d9f08ffeed9916e37b33e98c65be012cfff6e7fa7b67210ce1fefb",
@@ -361,7 +361,7 @@
     "frontend/dist/assets/zh-TW-RAJ6MFWO-CvxRLzTF.js": "96d4cc3853697facc13eb67ab2ff6bb747cdc83fa66004d24e7e27ec5a76af65",
     "frontend/dist/favicon.png": "42700cee5bb18ec0f1146311c13287b2f7cfeb72e713674ac208daaf7ac1cdb5",
     "frontend/dist/index.html": "f4f0dd983d7969772b9d5efb4eb70d138a5cae24ce54235374bc8eecbcb1d1d3",
-    "server/index.js": "1e3fa5d6bcb6346505644a5e88b7cf5599d6cc0752fdbb88d468c751656cda26",
+    "server/index.js": "cbd03a9094bced4ad0e248944f289b698c1361d73e256aef53704e7b44a71807",
     "server/node_modules/node-pty/LICENSE": "a3d60eaf32d2fb09c9d82ef39f14bd6e2c0f3ca7de30daa827486c0d6f8b6e9f",
     "server/node_modules/node-pty/README.md": "e2be297b0919196300e637fd2efb0cd039ee7f994515f45a0dd8eac112ec1eaf",
     "server/node_modules/node-pty/binding.gyp": "60087f9bc86f372a5ad49d15d7854140c29fac959aaa1fb2c8ffd0dc021595dd",
@@ -417,5 +417,5 @@
     "server/package.json": "a84c59e44e71ccbeb91bd38e0df88db62c695776808f0e7df1fd48f2bca55ecd",
     "ship-launcher.ps1": "c9d62cdbabb69b57ddde71cb206b57a4af7f3cf39ed4be58dc078539801977f9"
   },
-  "signature": "OpP9hW49NmI8kY2Df/jtQcK7BqV6krj1XqRhPpfBeSa5KPgjHF0hvTGF2WVLLIIoTF8xxyKz6KA5SDqdqJ6lDA=="
+  "signature": "U5kLdVGw5urY0lXUabq6RmNG2Jv54aOgykG0sKOpZBFs6XhQuNwkPfyl4WzBiczn3zaAOSd/Zh6PtW3Dtp60Dg=="
 }
