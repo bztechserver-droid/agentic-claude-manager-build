@@ -45,7 +45,7 @@
 #    developer's convenience being paid for by the recipient.
 #  * NO KILLING OF STALE NODE PROCESSES, and this is the one worth stopping on.
 #    The dev launcher's pre-flight kills any `node` LISTENING on its ports. A
-#    ship defaults to MDV2_PORT=5640 -- the DEV copy's port. Shipping that
+#    ship defaults to MDV2_PORT=4740 -- the DEV copy's port. Shipping that
 #    pre-flight means a recipient (or the developer, testing a ship on their own
 #    machine) double-clicks Start.bat and it silently kills the running dev
 #    server, with live terminal sessions in it. A launcher for someone else's
@@ -168,11 +168,11 @@ Write-Host "  node $nodeVersion"
 #
 # The port comes from THIS copy's .env, parsed by hand with the same rules as
 # ports.mjs -- including the trailing-comment strip. That strip is not cosmetic:
-# without it `MDV2_PORT=5640  # the api` parses as NaN, ports.mjs falls back to
+# without it `MDV2_PORT=4740  # the api` parses as NaN, ports.mjs falls back to
 # its default, and the launcher and the server then disagree about which port to
 # poll. The browser opens on a dead page and nothing on screen says why.
 #
-# 5640 is the default because that is ports.mjs's DEFAULT_PORTS.api, which is
+# 4740 is the default because that is ports.mjs's DEFAULT_PORTS.api, which is
 # also what ship.mjs writes into the shipped .env. If those ever diverge, the
 # .env wins here -- which is the correct precedence, since it is the file the
 # server reads too.
@@ -180,7 +180,7 @@ Write-Host "  node $nodeVersion"
 # .env is deliberately EXCLUDED from the signed manifest: moving the port is a
 # supported thing to do with a deployed copy, and re-sealing per deployment is
 # not a workflow anyone would follow. Editing it cannot break the seal.
-$port = 5640
+$port = 4740
 $envFile = Join-Path $root '.env'
 if (Test-Path $envFile) {
   foreach ($line in (Get-Content $envFile)) {
@@ -233,7 +233,7 @@ $env:COS_HOST = '127.0.0.1'
 # when this script exits, but a watchdog is as mortal as what it watches -
 # and closing the console ORPHANS this script rather than ending it, which
 # left the port listening with no window attached. Verified both ways: killing
-# the console left 5640 up indefinitely; killing this script freed it in five
+# the console left 4740 up indefinitely; killing this script freed it in five
 # seconds. So the server is told who its launcher is and checks for itself.
 # See the COS_LAUNCHER_PID block in server/index.js.
 $env:COS_LAUNCHER_PID = "$PID"
