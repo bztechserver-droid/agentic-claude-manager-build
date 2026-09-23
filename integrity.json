@@ -1,14 +1,14 @@
 {
   "version": 1,
   "algo": "ed25519",
-  "created": "2026-09-23T11:58:06.151Z",
+  "created": "2026-09-23T12:53:31.772Z",
   "excludes": [
     "server/data",
     ".env"
   ],
   "publicKey": "MCowBQYDK2VwAyEAy3eGYAXWbXgoU14PzbmW4xpcsciMnpG0PVBn7Su7rR4=",
   "files": {
-    "RELEASE.json": "11831a80e98fd45cc470ab1a595dee92168fa84570bf3390bd40e726aec708d9",
+    "RELEASE.json": "749a2db6b1e4ac08f46b424681bf0b96b54d25ee6c8aec3670b1cd871d7801b5",
     "Start.bat": "43b7307944c60e3341010a5def23440c64a0c4a612da04dc8ed448407129f966",
     "frontend/dist/assets/Assistant-Bold-gm-uSS1B.woff2": "e0cdd332ce039770e93ec44336b6db65f931940f42b0342aad35a06e7f991d29",
     "frontend/dist/assets/Assistant-Medium-DrcxCXg3.woff2": "81a9f280ce6a790f20ca8cd521183caa430f1f7fdc0752c36ef1cc6dc828ac57",
@@ -314,7 +314,7 @@
     "frontend/dist/assets/zh-TW-RAJ6MFWO-4x3zXhUj.js": "e39dabae3b60dc0ee9f4e3207bf7051fa3f0694627be34e9214e5624205e607b",
     "frontend/dist/favicon.png": "42700cee5bb18ec0f1146311c13287b2f7cfeb72e713674ac208daaf7ac1cdb5",
     "frontend/dist/index.html": "f8c86f6dc8554144119f5d437605b48af4707e1c5295475e81d5abf32dab6901",
-    "server/index.js": "b6bd84110c3285ce060eb797a96b50a4ccf0089ec02d4dbb537b1ca45b7e50c0",
+    "server/index.js": "c195e1d15207407d1378294a0feb276680a527ae55f61ac8634c2a929fd85fb0",
     "server/node_modules/node-pty/LICENSE": "a3d60eaf32d2fb09c9d82ef39f14bd6e2c0f3ca7de30daa827486c0d6f8b6e9f",
     "server/node_modules/node-pty/README.md": "e2be297b0919196300e637fd2efb0cd039ee7f994515f45a0dd8eac112ec1eaf",
     "server/node_modules/node-pty/binding.gyp": "60087f9bc86f372a5ad49d15d7854140c29fac959aaa1fb2c8ffd0dc021595dd",
@@ -370,5 +370,5 @@
     "server/package.json": "a84c59e44e71ccbeb91bd38e0df88db62c695776808f0e7df1fd48f2bca55ecd",
     "ship-launcher.ps1": "3ff6cf943482827d2911e467e3b89f4458366df79d6f85d7264b25649fa40579"
   },
-  "signature": "9PS3RUtXAooOEqaFyEKbZF/4+cQXq92ijRonOJlna5Bx/btQ3K6T2spz5TjaBh2KliRd/vMTcd2wmUzgPeF1DA=="
+  "signature": "ebMXOTHRtmKdpFLMStLmfKMP9xRrgKfiZd4cF/uzqpSTkvCIFzre1890wBlWkfKYKPZAhfApFGOtLVKiXm6GAQ=="
 }
