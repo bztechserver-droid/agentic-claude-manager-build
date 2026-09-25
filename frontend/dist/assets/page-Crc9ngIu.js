@@ -1,1 +1,0 @@
-import{d as r,r as s,j as t}from"./index-Ba_nfGuT.js";function i(){const e=r();return s.useEffect(()=>{e.replace("/login")},[e]),t.jsx("div",{className:"min-h-screen flex items-center justify-center bg-background",children:t.jsx("p",{className:"text-sm text-muted-foreground",children:"Redirecting to login…"})})}export{i as default};
