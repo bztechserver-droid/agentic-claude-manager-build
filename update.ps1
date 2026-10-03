@@ -50,7 +50,15 @@ param(
   # applies, this only removes the keystroke.
   [switch]$Yes,
   # Install/update somewhere other than the current directory.
-  [string]$Path
+  [string]$Path,
+  # VERSION SWITCHER. Go to one particular published release instead of the
+  # latest - older (to step back from a bad release) or newer. A commit of the
+  # release repo (`git log` there, or the list -Choose prints). It has to be a
+  # release on main: anything else is refused.
+  [string]$Version,
+  # List the published releases, mark the installed one, and ask which to
+  # switch to. What "Switch Version.bat" runs.
+  [switch]$Choose
 )
 
 $ErrorActionPreference = 'Stop'
@@ -155,7 +163,7 @@ if ($isRepo -and $remote -and $remote -match $REPO_NAME) {
   # A fresh install writes into this folder, so it has to be empty - bar the
   # two files we arrived as, and the junk Windows leaves lying about. Anything
   # else and we would be scattering a release over somebody's documents.
-  $ours = @('update.ps1', 'Update.bat', 'desktop.ini', 'Thumbs.db', '.DS_Store')
+  $ours = @('update.ps1', 'Update.bat', 'Switch Version.bat', 'desktop.ini', 'Thumbs.db', '.DS_Store')
   $strangers = Get-ChildItem -Force -Path $root |
     Where-Object { $ours -notcontains $_.Name }
   if ($strangers) {
@@ -227,7 +235,10 @@ if ($mode -eq 'install') {
   # not touch untracked files - and, worse, kept $dirty permanently truthy, so
   # the "already up to date" branch below could never be reached and every run
   # did a pointless reset and re-verify.
-  $dirty = & git status --porcelain --untracked-files=no
+  # The installer trio is left out too: after switching to an older release it
+  # is deliberately the NEWER copy (section 6), not an edit anyone made.
+  $dirty = & git status --porcelain --untracked-files=no |
+    Where-Object { $_ -notmatch '(update\.ps1|Update\.bat|Switch Version\.bat)"?$' }
   if ($dirty) {
     Write-Host ""
     Write-Host "  These tracked files differ from the release and WILL be overwritten:" -ForegroundColor Yellow
@@ -245,27 +256,70 @@ if ($LASTEXITCODE -ne 0) {
   # the wrong place entirely.
   Fail "git could not fetch the release - its reason is printed just above.`n  Common ones: no network; no access to this private repo ('gh auth status');`n  or the folder is nested too deep and git hit Windows' 260-character path`n  limit - install somewhere shorter, like C:\ChristopherOS."
 }
-$after = (& git rev-parse --short origin/main)
+$target = 'origin/main'
+
+# --- 5b. Version switcher: which release, if not the latest. ------------------
+#
+#     Every release is one commit on main, newest first, so the history IS the
+#     list of versions. -Choose shows the recent ones and asks; -Version names
+#     one. Either way the result must be on main: a stray commit, branch or tag
+#     is not something this folder was ever meant to run.
+if ($Choose) {
+  $installed = if ($mode -eq 'update') { (& git rev-parse HEAD) } else { '' }
+  $rows = @(& git log -25 --format='%H|%h|%ad|%s' --date=format:'%d %b %Y %H:%M' origin/main)
+  if (-not $rows) { Fail "No releases found on main." }
+  Write-Host "  Published releases (newest first):"
+  Write-Host ""
+  for ($i = 0; $i -lt $rows.Count; $i++) {
+    $f = $rows[$i].Split('|', 4)
+    $mark = if ($f[0] -eq $installed) { '  <- installed' } else { '' }
+    $tag = if ($i -eq 0) { ' (latest)' } else { '' }
+    Write-Host ("   {0,2}. {1}  {2}  {3}{4}{5}" -f ($i + 1), $f[1], $f[2], $f[3], $tag, $mark)
+  }
+  Write-Host ""
+  $pick = Read-Host "  Switch to which number? (Enter = cancel)"
+  if (-not $pick) { Write-Host "  Cancelled - nothing was changed."; Write-Host ""; exit 0 }
+  $n = 0
+  if (-not [int]::TryParse($pick, [ref]$n) -or $n -lt 1 -or $n -gt $rows.Count) { Fail "Not a number from the list: $pick" }
+  $Version = $rows[$n - 1].Split('|')[0]
+}
+if ($Version) {
+  $resolved = (& git rev-parse --verify --quiet "$Version^{commit}" 2>$null)
+  if (-not $resolved) { Fail "No release $Version in the release history." }
+  & git merge-base --is-ancestor $resolved origin/main
+  if ($LASTEXITCODE -ne 0) { Fail "$Version is not a published release (not on main)." }
+  $target = $resolved
+}
+$after = (& git rev-parse --short $target)
 
 if ($mode -eq 'update') {
   if ($before -eq $after -and -not $dirty) {
     Write-Host ""
-    Write-Host "  Already up to date ($before). Nothing to do." -ForegroundColor Green
+    $what = if ($Version) { "That release ($before) is already installed" } else { "Already up to date ($before)" }
+    Write-Host "  $what. Nothing to do." -ForegroundColor Green
     Write-Host ""
     exit 0
   }
-  Write-Host "  Available : $after"
+  Write-Host "  Available : $after$(if ($Version) { ' (chosen)' })"
   Write-Host ""
-  $log = & git log --oneline --no-decorate "HEAD..origin/main"
+  $log = & git log --oneline --no-decorate "HEAD..$target"
   if ($log) {
     Write-Host "  Releases to apply:"
     $log | ForEach-Object { Write-Host "    $_" }
     Write-Host ""
+  } else {
+    $back = & git log --oneline --no-decorate "$target..HEAD"
+    if ($back) {
+      Write-Host "  Going BACK - these newer releases will be left:" -ForegroundColor Yellow
+      $back | ForEach-Object { Write-Host "    $_" }
+      Write-Host "  (Update.bat brings you to the latest again.)"
+      Write-Host ""
+    }
   }
 }
 
 if (-not $Yes) {
-  $verb = if ($mode -eq 'install') { "Install here" } else { "Apply this update" }
+  $verb = if ($mode -eq 'install') { "Install here" } elseif ($Version) { "Switch to $after" } else { "Apply this update" }
   $answer = Read-Host "  $verb`? (y/N)"
   if ($answer -notmatch '^(y|yes)$') {
     Write-Host "  Cancelled - nothing was changed."
@@ -284,6 +338,20 @@ if (-not $Yes) {
 #     to whichever port the release shipped with. ---
 $savedEnv = if ($mode -eq 'update' -and (Test-Path $envFile)) { Get-Content $envFile -Raw } else { $null }
 
+# The installer files as they are NOW. A release older than the version
+# switcher ships an Update.bat/update.ps1 without it and no "Switch Version.bat";
+# switching back to one must not take away the way to switch forward again. So
+# these are put back after the checkout. They are published beside the ship,
+# not sealed in integrity.json, so the boot gate does not mind.
+$installerFiles = @('update.ps1', 'Update.bat', 'Switch Version.bat')
+$savedInstaller = @{}
+if ($Version) {
+  foreach ($f in $installerFiles) {
+    $p = Join-Path $root $f
+    if (Test-Path -LiteralPath $p) { $savedInstaller[$f] = [IO.File]::ReadAllBytes($p) }
+  }
+}
+
 Write-Host ""
 Write-Host "  Applying..."
 if ($mode -eq 'install') {
@@ -293,13 +361,22 @@ if ($mode -eq 'install') {
   # update.ps1" is exactly what every fresh install printed. Section 3 already
   # refused any folder holding anything but ours, so forcing can only overwrite
   # the pair we arrived as - with the release's own copy of it.
-  & git checkout --quiet -f -B main origin/main
+  & git checkout --quiet -f -B main $target
   if ($LASTEXITCODE -ne 0) {
     Fail "Could not check the release out into this folder - git's reason is printed just above."
   }
 } else {
-  & git reset --hard --quiet origin/main
+  & git reset --hard --quiet $target
   if ($LASTEXITCODE -ne 0) { Fail "git reset failed - this copy has NOT been updated." }
+}
+
+# A chosen release: keep the newest switcher (see above), even when that release is older.
+foreach ($f in $savedInstaller.Keys) {
+  $p = Join-Path $root $f
+  $now = if (Test-Path -LiteralPath $p) { [IO.File]::ReadAllBytes($p) } else { $null }
+  if ($null -eq $now -or [Convert]::ToBase64String($now) -ne [Convert]::ToBase64String($savedInstaller[$f])) {
+    [IO.File]::WriteAllBytes($p, $savedInstaller[$f])
+  }
 }
 
 if ($null -ne $savedEnv) {
@@ -416,6 +493,8 @@ $relFile = Join-Path $root 'RELEASE.json'
 Write-Host ""
 if ($mode -eq 'install') {
   Write-Host "  Installed $after into this folder." -ForegroundColor Green
+} elseif ($Version) {
+  Write-Host "  Switched : $before -> $after" -ForegroundColor Green
 } else {
   Write-Host "  Updated  : $before -> $after" -ForegroundColor Green
 }
