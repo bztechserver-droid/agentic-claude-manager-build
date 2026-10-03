@@ -44,6 +44,8 @@
 # Stopping belongs to ship-launcher.ps1, which owns a named mutex to do it with;
 # reaching in from here would be a second opinion about who is running. So it
 # refuses to touch a live install and asks you to close the window instead.
+# The one exception is the CRM drive host, which outlives the app by design -
+# see section 6.
 # ---------------------------------------------------------------------------
 param(
   # Skip the confirmation prompt. For a scheduled run - every safety check still
@@ -351,6 +353,37 @@ if ($Version) {
     if (Test-Path -LiteralPath $p) { $savedInstaller[$f] = [IO.File]::ReadAllBytes($p) }
   }
 }
+
+# The CRM drive host. server/index.js spawns crm-fs.exe DETACHED so the drive
+# stays mounted when the app closes - which means the port check in section 4
+# passes while the exe is still running, Windows refuses to replace it, and
+# the reset below stalls on git's "Unlink of file 'crm-fs/bin/.../crm-fs.exe'
+# failed. Should I try again? (y/n)" loop. Stop THIS copy's host (matched on
+# its exe path, so another copy's drive is left alone); WinFsp unmounts on its
+# exit and the server mounts it again on the next start. Saves still waiting
+# to go up are on disk in pending-<letter> and resume then. And should anything
+# else hold a file, GIT_ASK_YESNO makes git fail outright rather than ask.
+$crmFsDir = Join-Path $root 'crm-fs\'
+$hosts = @(Get-CimInstance Win32_Process -Filter "name='crm-fs.exe'" -ErrorAction SilentlyContinue |
+  Where-Object { $_.ExecutablePath -and $_.ExecutablePath.StartsWith($crmFsDir, [StringComparison]::OrdinalIgnoreCase) })
+if ($hosts) {
+  Write-Host ""
+  Write-Host "  Stopping the CRM drive host so its files can be replaced..."
+  foreach ($h in $hosts) { Stop-Process -Id $h.ProcessId -Force -ErrorAction SilentlyContinue }
+  # Up to 30 s: WinFsp unmounts the drive as the host exits, and that is not
+  # instant - 10 s was observed to be too short.
+  $alive = $hosts
+  for ($i = 0; $i -lt 60 -and $alive; $i++) {
+    Start-Sleep -Milliseconds 500
+    $alive = @($hosts | Where-Object { Get-Process -Id $_.ProcessId -ErrorAction SilentlyContinue })
+  }
+  # Refuse BEFORE the reset, not halfway through it: a reset that dies on a
+  # locked file leaves some files from the new release and some from the old.
+  if ($alive) {
+    Fail "The CRM drive host (crm-fs.exe, PID $($alive[0].ProcessId)) would not stop, so its files`n  cannot be replaced. Nothing was changed. End it in Task Manager and run this again."
+  }
+}
+$env:GIT_ASK_YESNO = 'false'
 
 Write-Host ""
 Write-Host "  Applying..."

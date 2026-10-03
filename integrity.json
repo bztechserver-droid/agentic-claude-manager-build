@@ -1,14 +1,14 @@
 {
   "version": 1,
   "algo": "ed25519",
-  "created": "2026-10-03T12:42:42.039Z",
+  "created": "2026-10-03T13:03:18.238Z",
   "excludes": [
     "server/data",
     ".env"
   ],
   "publicKey": "MCowBQYDK2VwAyEAjPtlVqPdYlGiIW1LSKChYCdJF1ztHNUemcoa55Hk0hQ=",
   "files": {
-    "RELEASE.json": "246ce741e91cb2928b484a7b06690839965656ccdbdf22c097aab91a4eb5e6a1",
+    "RELEASE.json": "0e727169f3fc1b35dd589b1816e8c3d7dd4f6b2abaff8a40be941cd097f34b65",
     "Start.bat": "43b7307944c60e3341010a5def23440c64a0c4a612da04dc8ed448407129f966",
     "crm-fs/bin/Release/net48/Microsoft.Bcl.AsyncInterfaces.dll": "80678203bd0203a6594f4e330b22543c0de5059382bb1c9334b7868b8f31b1bc",
     "crm-fs/bin/Release/net48/System.Buffers.dll": "accccfbe45d9f08ffeed9916e37b33e98c65be012cfff6e7fa7b67210ce1fefb",
@@ -386,5 +386,5 @@
     "server/package.json": "a84c59e44e71ccbeb91bd38e0df88db62c695776808f0e7df1fd48f2bca55ecd",
     "ship-launcher.ps1": "c9d62cdbabb69b57ddde71cb206b57a4af7f3cf39ed4be58dc078539801977f9"
   },
-  "signature": "QcR1O8DakxU1Ejf0N1V8B7yTMk/GwCJDAwI7QW7lJsBqxjkwxntfHAwiSlBVgael+9l856bfTnwAliXGxhttBw=="
+  "signature": "1SKaFfLa6mMak3i3yr/mcU28pVfNMdUnZO4MPb/xpzKeQQKsR9Z19QZyAZf5resXbFMwLgbgqeiA4p9SVGALAw=="
 }
