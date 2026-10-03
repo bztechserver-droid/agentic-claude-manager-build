@@ -1,0 +1,1 @@
+import{j as s}from"./index-D1RMUQIZ.js";import{D as i}from"./discussion-tabs-CFhITRPH.js";import"./user-round-BW7CkLHz.js";import"./reply-D8R-FRBF.js";function a(){return s.jsx("div",{className:"mx-auto w-full max-w-4xl",children:s.jsx(i,{entityType:"org",entityId:null,header:"Company-wide discussion"})})}export{a as default};
