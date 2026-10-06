@@ -1,1 +1,0 @@
-import{j as t,r}from"./index-CSJjsEZ3.js";import{M as e}from"./McpRunsPanel-B88XEnsd.js";import"./dynamic-BlCW2-TL.js";import"./circle-x-CiRrDaDM.js";import"./shield-check-CSHJAoXi.js";function m(){return t.jsx(r.Suspense,{fallback:t.jsx("p",{className:"text-sm text-muted-foreground",children:"Loading…"}),children:t.jsx(e,{})})}export{m as default};
