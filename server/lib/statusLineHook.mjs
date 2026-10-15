@@ -20,12 +20,22 @@
  *       the transcript at the last graceful exit. So the first value a process
  *       reports is its BASE, and only growth above it is this process's usage.
  *
- * ONE FILE PER LAUNCH. Christopher passes three arguments in the command:
- *   <launchId> <crmUserId|-> <crmOrgId|->
+ * ONE FILE PER LAUNCH. Christopher passes four arguments in the command:
+ *   <launchId> <crmUserId|-> <crmOrgId|-> <subscriptionKey|->
  * launchId is fresh for every spawn, so two processes on the same session id
  * (a pane and an external window, say) never share a file or a baseline, and the
  * person who STARTED the session is recorded with every reading — the usage is
  * theirs even if someone else is signed in by the time it is read.
+ *
+ * WHICH CLAUDE ACCOUNT. The status-line JSON carries the account's limits but
+ * not WHICH account they belong to. The 4th argument says it: the id of the
+ * CRM-assigned Claude subscription whose token this session runs on, or '-'
+ * for the build's own login (an older command line has no 4th argument at
+ * all, which means the same). Every cost snapshot carries it as
+ * subscriptionKey ('' for the build's own login), and limits are kept PER
+ * SUBSCRIPTION — limits/<subscription id>.json, or limits/_local.json for the
+ * build's own login — so two sessions on two subscriptions never overwrite
+ * each other's percentages.
  *
  * This script only WRITES SNAPSHOTS into the build's usage folder (COS_USAGE_DIR,
  * under the secrets root). It sends nothing anywhere. usageReporter.js reads the
@@ -50,12 +60,17 @@ import { spawnSync } from 'node:child_process'
 const SESSION_ID_RE = /^[A-Za-z0-9-]{8,64}$/
 const LAUNCH_ID_RE = /^[A-Za-z0-9]{8,64}$/
 const OWNER_ID_RE = /^[A-Za-z0-9-]{1,64}$/
+/* A subscription id is the CRM's uuid. It names a file below, so nothing else
+   is accepted as one — anything else is the build's own login. */
+const SUBSCRIPTION_KEY_RE = /^[0-9a-f-]{36}$/i
+const LOCAL_LIMITS = '_local'
 const CHAIN_TIMEOUT_MS = 3000
 
-const [argLaunch, argUser, argOrg] = process.argv.slice(2)
+const [argLaunch, argUser, argOrg, argSub] = process.argv.slice(2)
 const LAUNCH_ID = LAUNCH_ID_RE.test(argLaunch ?? '') ? argLaunch : null
 const OWNER_USER = OWNER_ID_RE.test(argUser ?? '') && argUser !== '-' ? argUser : null
 const OWNER_ORG = OWNER_ID_RE.test(argOrg ?? '') && argOrg !== '-' ? argOrg : null
+const SUBSCRIPTION_KEY = SUBSCRIPTION_KEY_RE.test(argSub ?? '') ? argSub.toLowerCase() : ''
 
 function readStdin() {
   try {
@@ -69,6 +84,14 @@ function atomicWrite(file, value) {
   const tmp = `${file}.tmp-${process.pid}`
   fs.writeFileSync(tmp, JSON.stringify(value), { encoding: 'utf8', mode: 0o600 })
   fs.renameSync(tmp, file)
+}
+
+function readJson(file) {
+  try {
+    return JSON.parse(fs.readFileSync(file, 'utf8'))
+  } catch {
+    return null
+  }
 }
 
 /* used_percentage is 0-100 with one decimal. A known Claude Code bug has put
@@ -118,6 +141,7 @@ function record(input) {
       durationMs,
       userId: OWNER_USER,
       orgId: OWNER_ORG,
+      subscriptionKey: SUBSCRIPTION_KEY,
       model: typeof input?.model?.id === 'string' ? input.model.id.slice(0, 80) : null,
       effort: typeof input?.effort?.level === 'string' ? input.effort.level.slice(0, 20) : null,
       projectId: process.env.COS_PROJECT_ID || null,
@@ -133,16 +157,28 @@ function record(input) {
       for (const [k, v] of Object.entries(rl)) {
         if (k !== 'five_hour' && k !== 'seven_day' && v && typeof v === 'object') extra[k] = v
       }
-      const file = path.join(dir, 'limits.json')
-      let prev = null
-      try {
-        prev = JSON.parse(fs.readFileSync(file, 'utf8'))
-      } catch {
-        prev = null
+      /* One file per Claude account — see "WHICH CLAUDE ACCOUNT" above. */
+      const limitsDir = path.join(dir, 'limits')
+      fs.mkdirSync(limitsDir, { recursive: true })
+      const file = path.join(limitsDir, `${SUBSCRIPTION_KEY || LOCAL_LIMITS}.json`)
+      let prev = readJson(file)
+      /* Before subscriptions, the build's own login had a single limits.json
+         (every session ran on it then). Its last reading carries over into
+         _local.json — the merge keeps a window until its own reset — and the
+         old file goes, so nothing goes on forwarding a frozen copy of it. */
+      const legacy = SUBSCRIPTION_KEY ? null : path.join(dir, 'limits.json')
+      if (legacy && fs.existsSync(legacy)) {
+        if (!prev) prev = readJson(legacy)
+        try {
+          fs.unlinkSync(legacy)
+        } catch {
+          /* another session's hook got there first */
+        }
       }
       atomicWrite(file, {
         at: now,
         sessionId,
+        subscriptionKey: SUBSCRIPTION_KEY,
         fiveHour: merge(fiveHour, prev?.fiveHour),
         week: merge(week, prev?.week),
         ...(Object.keys(extra).length ? { extra } : {}),
