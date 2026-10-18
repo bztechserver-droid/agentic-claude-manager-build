@@ -1,14 +1,15 @@
 {
   "version": 1,
   "algo": "ed25519",
-  "created": "2026-10-18T08:02:40.492Z",
+  "created": "2026-10-18T08:10:25.407Z",
   "excludes": [
     "server/data",
-    ".env"
+    ".env",
+    ".env.owner"
   ],
   "publicKey": "MCowBQYDK2VwAyEAjPtlVqPdYlGiIW1LSKChYCdJF1ztHNUemcoa55Hk0hQ=",
   "files": {
-    "RELEASE.json": "b9270cbec03da375e763f9374d227199acdce9ee8c53ca53e472347aa623e39d",
+    "RELEASE.json": "32bb167b0192550636dd7a9b8d0af04fed4fc16b2310ad5af55601bd20a45804",
     "Start.bat": "43b7307944c60e3341010a5def23440c64a0c4a612da04dc8ed448407129f966",
     "crm-fs/bin/Release/net48/Microsoft.Bcl.AsyncInterfaces.dll": "80678203bd0203a6594f4e330b22543c0de5059382bb1c9334b7868b8f31b1bc",
     "crm-fs/bin/Release/net48/System.Buffers.dll": "accccfbe45d9f08ffeed9916e37b33e98c65be012cfff6e7fa7b67210ce1fefb",
@@ -343,7 +344,7 @@
     "frontend/dist/assets/zh-TW-RAJ6MFWO-D-efrt6W.js": "2c0f2e148e0fca1096053ac5ee83fd5fe74deaa8763aec0121623d4537eeb8cb",
     "frontend/dist/favicon.png": "42700cee5bb18ec0f1146311c13287b2f7cfeb72e713674ac208daaf7ac1cdb5",
     "frontend/dist/index.html": "48e8e87ae30f063e172ecbd6be3d6d663fc4793e8e9f75ac3c922335f312d810",
-    "server/index.js": "bb056984fe58782273a97371d2816c8a59386f098a7c1267183ac099b7116b52",
+    "server/index.js": "ee58bd19de97f05ad1519deee558d5c8b291f218afbd7359f254a782babec629",
     "server/lib/statusLineHook.mjs": "3d0d5307a0d6e4b0953901105053f08dfbf334b02497934b88d4d98a77e3ea4f",
     "server/node_modules/node-pty/LICENSE": "a3d60eaf32d2fb09c9d82ef39f14bd6e2c0f3ca7de30daa827486c0d6f8b6e9f",
     "server/node_modules/node-pty/README.md": "e2be297b0919196300e637fd2efb0cd039ee7f994515f45a0dd8eac112ec1eaf",
@@ -400,5 +401,5 @@
     "server/package.json": "a84c59e44e71ccbeb91bd38e0df88db62c695776808f0e7df1fd48f2bca55ecd",
     "ship-launcher.ps1": "c9d62cdbabb69b57ddde71cb206b57a4af7f3cf39ed4be58dc078539801977f9"
   },
-  "signature": "wXe4FuW3Np4v+WtvaxEj38/v4ukxASsezxfoEHaXQ4QKXGdPGdugzSi6WBQhMxjMEbqN84xRfi2WE5TbXUNXDg=="
+  "signature": "C3bMmdRHDKWJQPmB0ZraFxl7PtJ761QllKUx6ZXM/6hgkg7Cp/C6WnxywGcQD+wHGyBE3Vq8A/SImCTip+E9CA=="
 }
