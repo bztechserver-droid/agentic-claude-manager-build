@@ -1,7 +1,7 @@
 {
   "version": 1,
   "algo": "ed25519",
-  "created": "2026-10-21T11:38:49.296Z",
+  "created": "2026-10-21T12:01:35.044Z",
   "excludes": [
     "server/data",
     ".env",
@@ -9,7 +9,7 @@
   ],
   "publicKey": "MCowBQYDK2VwAyEAjPtlVqPdYlGiIW1LSKChYCdJF1ztHNUemcoa55Hk0hQ=",
   "files": {
-    "RELEASE.json": "fe5545ff30889d100e1dd074beb06001998b77f766f095bc812a8d06ab94e7f6",
+    "RELEASE.json": "0d518de3a74f84e9233c337ac82e08be9a4dece9bdd0a349bb8ec1f25fae0264",
     "Start.bat": "43b7307944c60e3341010a5def23440c64a0c4a612da04dc8ed448407129f966",
     "crm-fs/bin/Release/net48/Microsoft.Bcl.AsyncInterfaces.dll": "80678203bd0203a6594f4e330b22543c0de5059382bb1c9334b7868b8f31b1bc",
     "crm-fs/bin/Release/net48/System.Buffers.dll": "accccfbe45d9f08ffeed9916e37b33e98c65be012cfff6e7fa7b67210ce1fefb",
@@ -344,7 +344,7 @@
     "frontend/dist/assets/zh-TW-RAJ6MFWO-BupgvV1_.js": "417d10966dd861de47131867f3b6558f76c70febb055b2fd668e8d2f020f66e6",
     "frontend/dist/favicon.png": "42700cee5bb18ec0f1146311c13287b2f7cfeb72e713674ac208daaf7ac1cdb5",
     "frontend/dist/index.html": "18d70d0dc70c38545e586114bc248f331ad7a9d60fbe7be01d2da2bfe6cc1047",
-    "server/index.js": "61dc480e3be7a62a17f802b6a7eed8f40a7ad3ae7d9c093e60b439d4d45858f7",
+    "server/index.js": "40ba1b19e3bd6ec4de808e66811cfec64566d6711325e1df6ae1b32d5477d6c1",
     "server/lib/statusLineHook.mjs": "3d0d5307a0d6e4b0953901105053f08dfbf334b02497934b88d4d98a77e3ea4f",
     "server/node_modules/node-pty/LICENSE": "a3d60eaf32d2fb09c9d82ef39f14bd6e2c0f3ca7de30daa827486c0d6f8b6e9f",
     "server/node_modules/node-pty/README.md": "e2be297b0919196300e637fd2efb0cd039ee7f994515f45a0dd8eac112ec1eaf",
@@ -397,9 +397,9 @@
     "server/node_modules/node-pty/third_party/conpty/1.25.260303002/win10-x64/OpenConsole.exe": "7f68c840226505004215c0b82d4e502c24b5bc3f4b93c4baaaa19bd679c0def8",
     "server/node_modules/node-pty/third_party/conpty/1.25.260303002/win10-x64/conpty.dll": "3319b484b80bb53d1f4d0a9eb0ea60fd0f61da69db7280ca43b84215f19245ff",
     "server/node_modules/node-pty/typings/node-pty.d.ts": "5e2960f29b6d3ca6b8a438cca419e0485d046cb7d9acf67471d5627803ad8db0",
-    "server/orchestrator-mcp.mjs": "6b8627e957432939f68faec0ca3443def7d91e6abaa3120942b109421ecb9f4c",
+    "server/orchestrator-mcp.mjs": "925f884782ffffbf30f1b496f445e46b264ae32428a7bdb342979c4568a8f3eb",
     "server/package.json": "a84c59e44e71ccbeb91bd38e0df88db62c695776808f0e7df1fd48f2bca55ecd",
     "ship-launcher.ps1": "c9d62cdbabb69b57ddde71cb206b57a4af7f3cf39ed4be58dc078539801977f9"
   },
-  "signature": "6BLmWTLcqRFX3uwaRcBMrmp3YKqdv8Pt9sY40PYj0mW726uqD+Dy9+hF8b726racUi5dq9k3tVfBN2ltgm39Bw=="
+  "signature": "E7aWx+Y3FHgoFboByLs+1SjF7L4NgX6EjIVkb8SNTGSla6enY7czg92dousYHz7RQR8obwezhe7RjJ86IOtLBw=="
 }
