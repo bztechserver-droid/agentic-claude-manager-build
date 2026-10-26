@@ -1,1 +1,0 @@
-import{r as a}from"./index-B3_Td9iV.js";function n(){return a.useEffect(()=>{if(typeof window>"u")return;const e=new URLSearchParams(window.location.search).get("view")||"dashboard";window.location.replace(`/${e}`)},[]),null}export{n as default};
